@@ -1,0 +1,308 @@
+/* Styles généraux */
+body {
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Personnalisation des cartes */
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+/* Styles pour le tableau */
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    border-top: none;
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Styles pour les boutons d'action */
+.btn-action {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .table-responsive {
+        border: none;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    /* Ajuster l'affichage du tableau sur mobile */
+    .table td, .table th {
+        padding: 0.5rem;
+    }
+}
+
+/* Animation pour les changements */
+.highlight {
+    animation: highlight 1s ease-out;
+}
+
+@keyframes highlight {
+    0% {
+        background-color: #fff3cd;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* Style pour les messages d'erreur */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Style pour les tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Styles d'impression */
+@media print {
+    /* Reset des styles de base pour l'impression */
+    body {
+        background: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 15px !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Ajustements pour les tableaux */
+    .table td, .table th {
+        padding: 5px 8px !important;
+        font-size: 15px !important;
+        line-height: 1.3 !important;
+    }
+
+    /* Espacement réduit mais raisonnable */
+    .card {
+        margin-bottom: 12px !important;
+        border: none !important;
+    }
+
+    .card-body {
+        padding: 10px !important;
+    }
+
+    .card-header {
+        padding: 10px !important;
+    }
+
+    /* Masquer les éléments non essentiels */
+    .btn,
+    .nav-tabs,
+    .no-print,
+    #addEmployee,
+    #deleteEmployee,
+    #backupData,
+    #restoreDataBtn,
+    #exportBtn,
+    .input-group,
+    form,
+    .modal,
+    #timeForm,
+    .card-header .d-flex.gap-2,
+    .card-header .btn-secondary,
+    .input-group-text,
+    #monthSelect,
+    .nav-tabs,
+    #newEmployee,
+    .table thead th:last-child,
+    .table tbody td:last-child {
+        display: none !important;
+    }
+
+    /* Optimisations pour le récapitulatif */
+    .list-group-item {
+        padding: 5px 8px !important;
+        border: none !important;
+        line-height: 1.3 !important;
+    }
+
+    h1 {
+        font-size: 24px !important;
+        margin: 12px 0 !important;
+    }
+
+    h2, h3, h4, h5, h6 {
+        font-size: 18px !important;
+        margin: 10px 0 !important;
+    }
+
+    .row {
+        margin: 0 !important;
+    }
+
+    .col, .col-md-6, [class^="col-"] {
+        padding: 6px !important;
+    }
+
+    /* Forcer le fond blanc et le texte noir */
+    * {
+        background-color: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+
+    /* Ajuster les marges de la page */
+    @page {
+        margin: 0.7cm !important;
+        size: A4 portrait;
+    }
+
+    /* Optimisations supplémentaires */
+    .table-responsive {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .table-sm td, .table-sm th {
+        padding: 4px 6px !important;
+        font-size: 15px !important;
+    }
+
+    /* Réduire la largeur des colonnes non essentielles */
+    .table th:last-child,
+    .table td:last-child {
+        width: auto !important;
+    }
+
+    .timesheet-table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin-bottom: 15px !important;
+    }
+
+    .timesheet-table th,
+    .timesheet-table td {
+        border: 1px solid #000 !important;
+        padding: 4px 6px !important;
+        font-size: 15px !important;
+        text-align: left !important;
+    }
+
+    .absences-summary {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        padding: 10px !important;
+        border: 1px solid #000 !important;
+    }
+
+    .absences-summary h3 {
+        margin-top: 0 !important;
+        margin-bottom: 10px !important;
+        font-size: 16px !important;
+    }
+
+    .absences-summary p {
+        margin: 5px 0 !important;
+        font-size: 15px !important;
+    }
+
+    /* Ajustement des colonnes du tableau */
+    .timesheet-table th:nth-child(1),
+    .timesheet-table td:nth-child(1) {
+        width: 12% !important; /* Date */
+    }
+    
+    .timesheet-table th:nth-child(2),
+    .timesheet-table td:nth-child(2) {
+        width: 15% !important; /* Employé */
+    }
+    
+    .timesheet-table th:nth-child(3),
+    .timesheet-table td:nth-child(3),
+    .timesheet-table th:nth-child(4),
+    .timesheet-table td:nth-child(4) {
+        width: 8% !important; /* Début et Fin */
+    }
+    
+    .timesheet-table th:nth-child(5),
+    .timesheet-table td:nth-child(5) {
+        width: 7% !important; /* Pause */
+    }
+    
+    .timesheet-table th:nth-child(6),
+    .timesheet-table td:nth-child(6),
+    .timesheet-table th:nth-child(7),
+    .timesheet-table td:nth-child(7),
+    .timesheet-table th:nth-child(8),
+    .timesheet-table td:nth-child(8),
+    .timesheet-table th:nth-child(9),
+    .timesheet-table td:nth-child(9) {
+        width: 8% !important; /* Heures */
+    }
+    
+    .timesheet-table th:nth-child(10),
+    .timesheet-table td:nth-child(10) {
+        width: 12% !important; /* Absence */
+    }
+
+    /* Alignement des nombres */
+    .timesheet-table td:nth-child(6),
+    .timesheet-table td:nth-child(7),
+    .timesheet-table td:nth-child(8),
+    .timesheet-table td:nth-child(9) {
+        text-align: right !important;
+    }
+}
+
+/* Masquer les éléments d'impression par défaut */
+.print-only {
+    display: none;
+}

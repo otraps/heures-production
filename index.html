@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suivi des Heures de Production</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- En-tête avec sélection d'employé -->
+        <div class="row mb-4">
+            <div class="col">
+                <h1 class="text-center">Suivi des Heures de Production</h1>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6">
+                                <label class="form-label">Sélectionner un employé</label>
+                                <div class="input-group">
+                                    <select id="employeeSelect" class="form-select">
+                                        <option value="">Tous les employés</option>
+                                    </select>
+                                    <button type="button" class="btn btn-danger" id="deleteEmployee">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mt-3 mt-md-0">
+                                <label class="form-label">Ajouter un nouvel employé</label>
+                                <div class="input-group">
+                                    <input type="text" id="newEmployee" class="form-control" placeholder="Nom de l'employé">
+                                    <button type="button" class="btn btn-primary" id="addEmployee">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de saisie -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="card-title h5 mb-0">Nouvelle entrée</h2>
+            </div>
+            <div class="card-body">
+                <form id="timeForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Date</label>
+                            <input type="date" id="workDate" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Pause (minutes)</label>
+                            <input type="number" id="breakTime" class="form-control" value="30" min="0" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Heure début</label>
+                            <input type="time" id="startTime" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Heure fin</label>
+                            <input type="time" id="endTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Récapitulatif du mois -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title h5 mb-0">Récapitulatif du mois</h2>
+                    <div class="d-flex gap-2">
+                        <input type="month" id="monthSelect" class="form-control" style="width: auto;">
+                        <button id="backupData" class="btn btn-secondary">
+                            <i class="bi bi-download"></i> Sauvegarder les données
+                        </button>
+                        <input type="file" id="restoreData" class="d-none" accept=".json">
+                        <button id="restoreDataBtn" class="btn btn-secondary">
+                            <i class="bi bi-upload"></i> Restaurer les données
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Heures travaillées</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Heures normales:</span>
+                                <span id="monthNormalHours">0h</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Heures de nuit:</span>
+                                <span id="monthNightHours">0h</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Heures de compensation:</span>
+                                <span id="monthCompHours">0h</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total des heures:</span>
+                                <span id="monthTotalHours">0h</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <span>Balance (Objectif 182h):</span>
+                                <span id="monthBalance">0h</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Absences</h6>
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Jours fériés:</span>
+                                <span id="monthHolidays">0 jours</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Vacances:</span>
+                                <span id="monthVacationDays">0 jours</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Congés:</span>
+                                <span id="monthUnpaidDays">0 jours</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Maladie:</span>
+                                <span id="monthSickDays">0 jours</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>Total jours d'absence:</span>
+                                <span id="monthTotalAbsences">0 jours</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestion des absences -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="card-title h5 mb-0">Gestion des absences</h2>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs mb-3" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#oneTimeTab">
+                            Absence ponctuelle
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#recurringTab">
+                            Congé récurrent
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#quickAddTab">
+                            Ajout rapide
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Absence ponctuelle -->
+                    <div class="tab-pane fade show active" id="oneTimeTab">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Type d'absence</label>
+                                <select id="absenceType" class="form-select">
+                                    <option value="holiday">Férié</option>
+                                    <option value="vacation">Vacance</option>
+                                    <option value="leave">Congé</option>
+                                    <option value="sick">Maladie</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Date de début</label>
+                                <input type="date" id="absenceStart" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Date de fin</label>
+                                <input type="date" id="absenceEnd" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button id="addAbsence" class="btn btn-primary">Ajouter l'absence</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Congé récurrent -->
+                    <div class="tab-pane fade" id="recurringTab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Jour de la semaine</label>
+                                <select id="recurringDay" class="form-select">
+                                    <option value="1">Lundi</option>
+                                    <option value="2">Mardi</option>
+                                    <option value="3">Mercredi</option>
+                                    <option value="4">Jeudi</option>
+                                    <option value="5">Vendredi</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Type d'absence</label>
+                                <select id="recurringType" class="form-select">
+                                    <option value="holiday">Férié</option>
+                                    <option value="vacation">Vacance</option>
+                                    <option value="leave">Congé</option>
+                                    <option value="sick">Maladie</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button id="addRecurring" class="btn btn-primary">Définir le congé récurrent</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ajout rapide -->
+                    <div class="tab-pane fade" id="quickAddTab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label">Date</label>
+                                <input type="date" id="quickDate" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Type d'absence</label>
+                                <select id="quickType" class="form-select">
+                                    <option value="holiday">Férié</option>
+                                    <option value="vacation">Vacance</option>
+                                    <option value="leave">Congé</option>
+                                    <option value="sick">Maladie</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button id="addQuickAbsence" class="btn btn-primary">Ajouter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h6>Absences enregistrées</h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Employé</th>
+                                        <th>Type</th>
+                                        <th>Début</th>
+                                        <th>Fin</th>
+                                        <th>Jours</th>
+                                        <th>Récurrent</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="absencesList">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historique des entrées -->
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="card-title h5 mb-0">Historique des entrées</h2>
+                    <div class="d-flex gap-2">
+                        <button id="printTimesheet" class="btn btn-secondary">
+                            <i class="bi bi-printer"></i> Imprimer feuille d'heures
+                        </button>
+                        <button id="exportBtn" class="btn btn-outline-secondary btn-sm">Exporter</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Employé</th>
+                                <th>Début</th>
+                                <th>Fin</th>
+                                <th>Pause</th>
+                                <th>Normal</th>
+                                <th>Nuit</th>
+                                <th>Comp.</th>
+                                <th>Total</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmer la suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    Voulez-vous vraiment supprimer cette entrée ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
